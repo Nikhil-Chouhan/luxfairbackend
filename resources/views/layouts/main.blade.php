@@ -22,6 +22,7 @@
 	    	<!-- initiate chat section-->
 	    	@include('include.chat')
 
+	    	@include('include.confirmmodel')
 
 	    	<!-- initiate footer section-->
 	    	@include('include.footer')

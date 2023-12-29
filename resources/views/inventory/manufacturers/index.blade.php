@@ -81,7 +81,10 @@
                             <label class="d-block">Description</label>
                             <input type="text" name="description" class="form-control" placeholder="Enter Type">
                         </div>
-                       
+                        <div class="form-group">
+                            <label class="d-block">Image</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                        </div>
                         <div class="form-group">
                             <input class="btn btn-primary" type="submit" name="Save" value="Save">
                         </div>
@@ -142,7 +145,7 @@
         modal.find('.modal-body input[name="name"]').val(name);
         modal.find('.modal-body input[name="description"]').val(description);
         modal.find('.modal-body input[name="id"]').val(id);
-        modal.find('.modal-body img#edit_modal_img').attr('src', image);
+        modal.find('.modal-body img#edit_modal_img').attr('src', '/'+image);
      
         });
     </script>

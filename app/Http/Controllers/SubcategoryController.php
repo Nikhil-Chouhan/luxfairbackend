@@ -155,8 +155,10 @@ class SubcategoryController extends Controller
                                             data-category_id = '. $data->category_id .'
                                             
                                             ><i class="ik ik-edit-2"></i></a>
-                                <a href="' . url('admin/subcategory/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
+                                            <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/subcategory/delete/" . $data->id) . '\')">
+                                            <i class="ik ik-trash-2 f-16 text-red"></i>
+                                        </a>
+                                      </div>';
 
                 }
                 return $output;

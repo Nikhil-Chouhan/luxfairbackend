@@ -87,11 +87,14 @@ class ManufacturerContoller extends Controller
             return redirect()->back()->withInput()->with('error', $validator->messages()->first());
         }
         try {
-            if (!empty($request->image)) {
-                $imageName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('images/manufacturers'), $imageName); 
-            }
 
+            $manufaImage = $request->file('image');
+            if (!empty($manufaImage)) {
+                $manufaImageName = time() . '.' . $manufaImage->getClientOriginalExtension();  
+                $manufaImage->move('uploads/manufacturers/', $manufaImageName);
+                $manufaImagepath = 'uploads/manufacturers/'.$manufaImageName;
+                $manufacturers->image = $manufaImagepath;
+            }
       
             // store manufacturers information
             $manufacturers = Manufacturer::create([
@@ -140,17 +143,13 @@ class ManufacturerContoller extends Controller
                 $manufacturers->name = $request->name;
             }
 
-                 $manufaImage = $request->file('image');
-                 if (!empty($manufaImage)) {
-                     $manufaImageName = time() . '.' . $manufaImage->getClientOriginalExtension();  
-                     $manufaImage->move(public_path('uploads/manufacturers'), $manufaImageName);
-                     $manufacturers->image = $manufaImageName;
-                 }
-
-                //  if (!empty($request->image)) {
-                //     $imageName = time() . '.' . $request->image->extension();
-                //     $request->image->move(public_path('images/manufacturers'), $imageName); 
-                // }
+            $manufaImage = $request->file('image');
+            if (!empty($manufaImage)) {
+                $manufaImageName = time() . '.' . $manufaImage->getClientOriginalExtension();  
+                $manufaImage->move('uploads/manufacturers/', $manufaImageName);
+                $manufaImagepath = 'uploads/manufacturers/'.$manufaImageName;
+                $manufacturers->image = $manufaImagepath;
+            }
 
             $manufacturers->save();
 

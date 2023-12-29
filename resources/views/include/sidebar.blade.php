@@ -25,7 +25,7 @@
                     <a href="#"><i class="ik ik-headphones"></i><span>{{ __('Products')}}</span></a>
                     <div class="submenu-content">
                         <a href="{{url('admin/products/create')}}" class="menu-item {{ ($segment1 == 'products' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Product')}}</a>
-                        <a href="{{url('admin/products')}}" class="menu-item {{ ($segment1 == 'products' && $segment2 == '') ? 'active' : '' }}">{{ __('List Producs')}}</a>
+                        <a href="{{url('admin/products')}}" class="menu-item {{ ($segment1 == 'products' && $segment2 == '') ? 'active' : '' }}">{{ __('List Products')}}</a>
                     </div>
                 </div>
                 @can('manage_category')
