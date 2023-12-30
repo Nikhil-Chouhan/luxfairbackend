@@ -39,6 +39,7 @@
     <div class="shop-box-inner">
         <div class="container-fluid">
             <div class="row">
+
                 <div class="col-xl-4 col-lg-4 col-sm-12 col-xs-12 sidebar-shop-left">
                     <div class="product-categori">
                         
@@ -68,6 +69,39 @@
                                     @foreach($all_manufacturers as $manufacturer)
                                         <input type="checkbox" id="manufacturer_{{$manufacturer->id}}" name="manufacturer" class="manufacturer_filter" value="{{$manufacturer->id}}" @if(in_array($manufacturer->id, $manufacturer_ids)) checked @endif>
                                         <label for="manufacturer_{{$manufacturer->id}}">{{$manufacturer->name}}</label>
+                                        <br>
+                                    @endforeach
+                                </div>
+                                </div>
+                            </div> 
+                        </div> 
+
+                        <div class="accordion" id="accordionExampleTwo">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="mb-0">
+                                        <button class="btn  " type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        Sector <i class="fa fa-angle-down"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExampleTwo">
+                                <div class="card-body"> 
+                                    @php
+
+                                        $all_sector = App\Models\Sector::all();
+                                        $sector_ids = [];
+                                        if(request()->has('sector')){
+                                            $sector_ids = explode(',', request()->sector);
+                                        }
+                                    @endphp
+
+
+
+                                    @foreach($all_sector as $sector)
+                                        <input type="checkbox" id="sector_{{$sector->id}}" name="sector" class="sector_filter" value="{{$sector->id}}" @if(in_array($sector->id, $sector_ids)) checked @endif>
+                                        <label for="sector_{{$sector->id}}">{{$sector->name}}</label>
                                         <br>
                                     @endforeach
                                 </div>
@@ -297,6 +331,16 @@
             manufacturer = manufacturer.toString();  
             var searchParams = new URLSearchParams(window.location.search)
             searchParams.set('manufacturer', manufacturer)
+            window.location.search = searchParams.toString()
+        });
+        $('.sector_filter').click(function(){
+            var sector = [];
+            $('.sector_filter:checked').each(function(){
+                sector.push($(this).val());
+            });
+            sector = sector.toString();  
+            var searchParams = new URLSearchParams(window.location.search)
+            searchParams.set('sector', sector)
             window.location.search = searchParams.toString()
         });
         // showproducts_filter filter

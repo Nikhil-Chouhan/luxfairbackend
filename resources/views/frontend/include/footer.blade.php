@@ -36,10 +36,7 @@
 
                             <ul>
                                 <li>
-                                    <p>Lorem ipsum dolor sit
-                                        amet, consectetur
-                                        adipiscing elit. Vivamus ac
-                                        molestie turpis.</p>
+                                    <p>Welcome to LuxFair – your source for premium electrical and lighting solutions. Illuminate and power up confidently with our curated selection from top manufacturers.</p>
                                 </li>
 
                             </ul>

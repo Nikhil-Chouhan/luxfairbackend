@@ -61,7 +61,9 @@ class RolesController extends Controller
                 if ($hasManageRoles && $data->name != 'Super Admin') {
                     $output = '<div class="table-actions">
                                     <a href="' . url('admin/role/edit/' . $data->id) . '" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                    <a href="' . url('admin/role/delete/' . $data->id) . '"  ><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                    <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/role/delete/" . $data->id) . '\')">
+                                    <i class="ik ik-trash-2 f-16 text-red"></i>
+                                </a>
                                 </div>';
                 }
 

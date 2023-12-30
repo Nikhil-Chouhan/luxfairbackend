@@ -51,6 +51,11 @@
                     <a href="{{url('admin/manufacturers')}}"><i class="ik ik-list"></i><span>{{ __('Manufacturers')}}</span></a>
                 </div>
                 @endcan 
+                @can('manage_sector')
+                <div class="nav-item {{ ($segment1 == 'sector') ? 'active' : '' }}">
+                    <a href="{{url('admin/sector')}}"><i class="ik ik-list"></i><span>{{ __('Sector')}}</span></a>
+                </div>
+                @endcan 
                 @can('manage_menus')
                 <div class="nav-item {{ ($segment1 == 'header_menus') ? 'active' : '' }}">
                     <a href="{{url('admin/header_menus')}}"><i class="ik ik-list"></i><span>{{ __('Header Menus')}}</span></a>

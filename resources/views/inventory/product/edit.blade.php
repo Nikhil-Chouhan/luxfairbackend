@@ -132,6 +132,17 @@
                             
                             <div class="col-sm-6">
 
+<div class="form-group">
+    <label class="d-block">Product of the Week</label>
+    <select class="form-control select2 " name="is_featured" value="{{ old('is_featured') }}">
+    <option selected="selected"  value="0">No</option>
+    <option value="1" >Yes</option>
+    </select>
+</div>
+</div>
+
+                            <div class="col-sm-6">
+
                                 <div class="form-group">
                                     <label class="d-block">Indoor/Outdoor</label>
                                     <select class="form-control select2 " name="indoor_outdoor"  >
@@ -147,13 +158,26 @@
                                     <input type="text" name="code" id="code" class="form-control" value="@if(!empty(old('code'))){{ old('code') }}@else{{ $product->code }}@endif">
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <!-- <div class="col-sm-6">
 
                                 <div class="form-group">
                                     <label class="d-block">Sector</label>
                                     <input type="text" name="sector" id="sector" class="form-control" value="@if(!empty(old('sector'))){{ old('sector') }}@else{{ $product->sector }}@endif">
                                 </div>
-                            </div>
+                            </div> -->
+                            
+                            <div class="col-sm-6">
+<div class="form-group">
+    <label class="d-block">Sector</label>
+    <select class="form-control select2" multiple name="sector_id[]" id="sector_id">
+        <option value="" data-select2-id="4">Select Sector</option>
+        @foreach($sector as $value)
+            <option value="{{ $value->id }}">{{ $value->name }}</option>
+        @endforeach
+    </select>
+</div>
+</div>
+
                             <div class="col-sm-6">
 
                                 <div class="form-group">

@@ -18,11 +18,15 @@
 
 
 	@yield('content')	
+
+
 	<!-- initiate footer section-->
 	@include('frontend.include.footer')
 
 	<!-- initiate scripts-->
 	@include('frontend.include.script')	
+
+	@include('frontend.include.searchmodel')
 
 	@stack('scripts')
 </body>

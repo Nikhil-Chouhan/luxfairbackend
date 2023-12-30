@@ -63,7 +63,9 @@ class UserController extends Controller
                 if ($hasManageUser) {
                     $output = '<div class="table-actions">
                                 <a href="' . url('admin/user/' . $data->id) . '" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="' . url('admin/user/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/user/delete/" . $data->id) . '\')">
+                                <i class="ik ik-trash-2 f-16 text-red"></i>
+                            </a>
                             </div>';
                 }
 

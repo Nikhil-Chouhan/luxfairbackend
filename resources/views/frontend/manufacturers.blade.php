@@ -45,7 +45,7 @@
 											@foreach($all_manufacturers as $key => $manufacturer)
 												<div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
 													<div class="products-single fix">
-														<a >
+														<a href="/products?manufacturer={{$manufacturer->id}}">
 															<div class="box-img-hover">
 															 
 															@if($manufacturer->image)

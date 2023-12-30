@@ -75,7 +75,9 @@ class CategoryController extends Controller
                                             data-id = '. $data->id .'
                                             data-description = '. $data->category_description .'
                                             ><i class="ik ik-edit-2"></i></a>
-                                            <a href="' . url('admin/category/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                            <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/category/delete/" . $data->id) . '\')">
+                                            <i class="ik ik-trash-2 f-16 text-red"></i>
+                                        </a>
                                             </div>';
                                             
                 }

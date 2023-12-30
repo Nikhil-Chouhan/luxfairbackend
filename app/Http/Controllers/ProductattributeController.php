@@ -50,7 +50,9 @@ class ProductattributeController extends Controller
 
                 if ($hasManageProductAttributes) {
                     $output = '<div class="table-actions">
-                                            <a href="' . url('admin/product_attributes/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                            <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/product_attributes/delete/" . $data->id) . '\')">
+                                            <i class="ik ik-trash-2 f-16 text-red"></i>
+                                        </a>
                                             </div>';
                                             
                 }

@@ -22,6 +22,21 @@ class Product extends Model
         return $this->belongsTo(Manufacturer::class);
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
+    }
+
     public function productmeta()
     {
         return $this->hasMany(Productmeta::class);

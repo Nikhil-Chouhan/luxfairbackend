@@ -9,6 +9,7 @@ use App\Models\Productattribute;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Manufacturer;
+use App\Models\Sector;
 
 use Auth;
 use DataTables;
@@ -71,7 +72,10 @@ class ProductController extends Controller
                     $output = '<div class="table-actions">
                     
                                 <a href="' . url('admin/products/edit/' .  $data->id).'"><i class="ik ik-edit-2"></i></a>
-                                <a href="' . url('admin/products/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a href="' . url('admin/products/duplicate/' .  $data->id).'"><i class="ik ik-copy"></i></a>
+                                <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/products/delete/" . $data->id) . '\')">
+                                <i class="ik ik-trash-2 f-16 text-red"></i>
+                            </a>
                                 </div>';
                                             
                 }
@@ -98,7 +102,8 @@ class ProductController extends Controller
         ksort($product_arr, SORT_NUMERIC);
  
         $manufacturers = Manufacturer::get();
-        return view('inventory.product.create',compact('categories','product_arr','manufacturers'));
+        $sector = Sector::get();
+        return view('inventory.product.create',compact('categories','product_arr','manufacturers','sector'));
     }
     /**
      * Store Product
@@ -130,12 +135,15 @@ class ProductController extends Controller
             $product->category_id = $request->category_id;
             $product->subcategory_id = $request->subcategory_id;
             $product->manufacturer_id = $request->manufacturer_id;
+            $sectorIdsString = implode(',', $request->sector_id);
+            $product->sector_id = $sectorIdsString;
             $product->price = $request->price;
             $product->short_description = $request->short_description;
             $product->long_description = $request->long_description;
             $product->is_active = $request->is_active;
+            $product->is_featured = $request->is_featured;
             $product->indoor_outdoor = $request->indoor_outdoor;
-            $product->sector = $request->sector;
+            // $product->sector = $request->sector;
             $product->design = $request->design;
             $product->connection = $request->connection;
             $product->installation = $request->installation;
@@ -214,6 +222,35 @@ class ProductController extends Controller
         }
     }
 
+    public function duplicate($id)
+{
+    try {
+        // Find the product to duplicate
+        $originalProduct = Product::findOrFail($id);
+
+        // Create a new product with the same attributes
+        $newProduct = $originalProduct->replicate();
+        $newProduct->name = $originalProduct->name . ' (Copy)';
+        $newProduct->slug = str_slug($newProduct->name, '-');
+        $newProduct->save();
+
+        // Duplicate related records (if any), e.g., product gallery
+        // Adjust this part based on your specific related records
+        foreach ($originalProduct->gallery as $galleryImage) {
+            $newGalleryImage = $galleryImage->replicate();
+            // Modify any attributes if needed
+            $newProduct->gallery()->save($newGalleryImage);
+        }
+
+        // Redirect to the product index page
+        return redirect()->route('products.index')->with('success', 'Product duplicated successfully.');
+    } catch (\Exception $e) {
+        $bug = $e->getMessage();
+        return redirect()->back()->withErrors($bug);
+    }
+}
+
+
     /**
      * Edit Product
      *
@@ -235,6 +272,7 @@ class ProductController extends Controller
 
         ksort($product_arr, SORT_NUMERIC);
         $manufacturers = Manufacturer::get(); 
+        $sector = Sector::get();
 
         // get gallery imgs 
         $product_gallery = Productgallery::where('product_id',$product->id)->get()->toArray();
@@ -244,7 +282,7 @@ class ProductController extends Controller
         // echo "<pre>";
         // print_r($product_metas);
         // die;
-        return view('inventory.product.edit', compact('product','categories','product_arr','manufacturers','product_gallery','product_metas'));
+        return view('inventory.product.edit', compact('product','categories','product_arr','manufacturers','sector','product_gallery','product_metas'));
     }
 
    
@@ -275,12 +313,15 @@ class ProductController extends Controller
             $product->category_id = $request->category_id;
             $product->subcategory_id = $request->subcategory_id;
             $product->manufacturer_id = $request->manufacturer_id;
+            $sectorIdsString = implode(',', $request->sector_id);
+            $product->sector_id = $sectorIdsString;
             $product->price = $request->price;
             $product->short_description = $request->short_description;
             $product->long_description = $request->long_description;
             $product->is_active = $request->is_active;
+            $product->is_featured = $request->is_featured;
             $product->indoor_outdoor = $request->indoor_outdoor;
-            $product->sector = $request->sector;
+            // $product->sector = $request->sector;
             $product->design = $request->design;
             $product->connection = $request->connection;
             $product->installation = $request->installation;

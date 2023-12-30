@@ -140,8 +140,15 @@
                     <div class="col-md-12">
                         <h2 class="product_attr_group">Product Details </h2>					
                         <p><b>Indoor / Outdoor  </b>: {{ $product->indoor_outdoor }}</p>
-                 
-                        <p><b>Sector </b>: {{ $product->sector }}</p>
+                        <p><b>Sector</b>: 
+    @php
+        $sectorIds = explode(',', $product->sector_id);
+        $sectors = App\Models\Sector::whereIn('id', $sectorIds)->pluck('name')->toArray();
+        echo implode(', ', $sectors);
+    @endphp
+</p>
+                        <p><b>Category:</b> {{ optional($product->category)->category_title ?? "-" }}</p>
+                        <p><b>SubCategory:</b> {{ optional($product->subcategory)->subcategory_title ?? "-" }}</p>
                         <p><b>Manufacturer </b>: {{ $product->manufacturer->name }}</p>
                         <p><b>Luminaire Product Name </b>: {{ $product->name }}</p>
                         <p><b>Luminaire Product Code </b>: {{ $product->code }}</p> 

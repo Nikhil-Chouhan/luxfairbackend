@@ -986,6 +986,7 @@ font-family: 'Fira Code', monospace;
      margin: 0 auto;
      text-align: center;
      display: block;
+     height: 150px;
 }
  .type-lb{
      position: absolute;
@@ -4146,3 +4147,8 @@ input[type="checkbox"]:before {
 .fa-caret-up:before{font-family: 'FontAwesome';}
 .fixed-menu ul li a{color:#fff !important;}
 .fixed-menu{background:#000 !important;}
+
+.non_bg_button {
+    background: unset;
+    border: unset;
+}

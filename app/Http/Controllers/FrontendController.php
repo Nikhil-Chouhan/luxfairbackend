@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Comparision;
 use App\Models\Manufacturer;
+use App\Models\Sector;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Productattribute;
 use Illuminate\Http\Request;
@@ -19,7 +21,11 @@ class FrontendController extends Controller
     
     public function index()
     {
-        return view('frontend.index');
+        $all_sector= Sector::orderBy('id', 'asc')->get();
+        $all_categories= Category::orderBy('id', 'asc')->get();
+        // $product_of_week= Product::where('featured_product', 1)->count();
+
+        return view('frontend.index',compact('all_sector','all_categories'));
     }
     
     public function register()
@@ -111,6 +117,16 @@ class FrontendController extends Controller
             } 
         }
 
+        if ($request->has('sector')) {
+            $sectorIds = explode(',', $request->sector);
+        
+            // Check if all values are integers
+            if (count($sectorIds) > 0 && count(array_filter($sectorIds, 'is_numeric')) === count($sectorIds)) {
+                foreach ($sectorIds as $sectorId) {
+                    $all_products = $all_products->orWhere('sector_id', 'LIKE', '%,' . $sectorId . ',%');
+                }
+            } 
+        }
         // indoor_outdoor_filter
         if ($request->has('indoor_outdoor_filter')) {
             $indoor_outdoor =  $request->indoor_outdoor_filter;
@@ -192,9 +208,21 @@ class FrontendController extends Controller
     }
 
 
+    public function supersearch(Request $request)
+    {  
+    $query = $request->input('query');
+    $all_products = Product::where('name', 'LIKE', "%$query%")->get();
+    $indoor_products_count= Product::where('indoor_outdoor', 'indoor')->count();
+    $outdoor_products_count= Product::where('indoor_outdoor', 'outdoor')->count();
+    $all_manufacturers= Manufacturer::orderBy('id', 'desc')->get();
+    return view('frontend.products', compact('all_products', 'indoor_products_count', 'outdoor_products_count', 'all_manufacturers'));
+
+    }
+
     public function sectors()
     {
-        return view('frontend.sectors');
+        $all_sector= Sector::orderBy('id', 'asc')->get();
+        return view('frontend.sectors', compact('all_sector'));
     }
 
     public function manufacturers()

@@ -43,57 +43,28 @@
 						<div class="three-column-images">
 							<div class="container ava_2 sectorin" >
 								<div class="row">
-									<div class=" col-sm-2">
-										<a   target="_blank" class="ava_1"><img class="img-fluid" src="{{asset('frontend/images/Aviation_Light.png')}}" alt="" />
-										Aviation</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Art&Culture_Light')}}.png" alt="" />
-										<a  target="_blank" class="ava_1">Arts & <br/> Culture</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/CommercialOffice_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Commercial<br/> Office</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Educational_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Education</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/ExternalArchitecture_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">External <br/>Architecture</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Healthcare_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Healthcare</a>
-									</div>
+
+								@if(isset($all_sector) && $all_sector->count() > 0)
+											@foreach($all_sector as $key => $sector)
+
+											<div class=" col-sm-2">
+									      	<a href="/products?sector={{$sector->id}}" class="ava_1">
+												@if($sector->image)
+																<img src="{{asset($sector->image)}}" class="img-fluid" alt="Image">
+															@else
+																<img src="{{asset('frontend/images/no-image.png')}}" class="img-fluid" alt="Image">
+															@endif 
+													
+															<p> <br> {{$sector->name}}</p>
+											</a>
+									         </div>
+											@endforeach
+										@endif
+
+									
+								
 								</div> <!-- Row -->
-								<div class="row">
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Hotel&Wellness_Light')}}.png" alt="" />
-										<a  target="_blank" class="ava_1">Hotel &<br/> Wellness</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Industrial_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Industrial</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Residential_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Residential</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Retail_Light.png')}}" alt="" />
-										<a  target="_blank" class="ava_1">Retail</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Sports&Events_Light')}}.png" alt="" />
-										<a  target="_blank" class="ava_1">Sports &<br/> Events</a>
-									</div>
-									<div class=" col-sm-2">
-										<img class="img-fluid" src="{{asset('frontend/images/Transport&highway_Light')}}.png" alt="" />
-										<a  target="_blank" class="ava_1">Transport &<br/> Highways</a>
-									</div>
-								</div> <!-- Row -->
+								
 							</div>
 						</div>
 					</div>

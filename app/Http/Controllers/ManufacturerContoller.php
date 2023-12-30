@@ -58,7 +58,9 @@ class ManufacturerContoller extends Controller
                         data-image="' . $data->image . '"
                         data-id="' . $data->id . '"
                         ><i class="ik ik-edit-2"></i></a>
-                        <a href="' . url('admin/manufacturers/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                        <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/manufacturers/delete/" . $data->id) . '\')">
+                        <i class="ik ik-trash-2 f-16 text-red"></i>
+                    </a>
                     </div>';
                 }
                 return $output;
@@ -93,14 +95,13 @@ class ManufacturerContoller extends Controller
                 $manufaImageName = time() . '.' . $manufaImage->getClientOriginalExtension();  
                 $manufaImage->move('uploads/manufacturers/', $manufaImageName);
                 $manufaImagepath = 'uploads/manufacturers/'.$manufaImageName;
-                $manufacturers->image = $manufaImagepath;
             }
       
             // store manufacturers information
             $manufacturers = Manufacturer::create([
                 'name' => $request->name,
                 'description' => $request->description,
-                'image' => $imageName ?? '',
+                'image' => $manufaImagepath ?? '',
             ]);
 
 

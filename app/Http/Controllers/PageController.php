@@ -36,7 +36,9 @@ class PageController extends Controller
                 if ($hasManageProductAttributes) {
                     $output = '<div class="table-actions">
                     <a href="/custompages/edit/'. $data->id.'"><i class="ik ik-edit-2"></i></a>
-                                            <a href="' . url('admin/custompages/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                            <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/custompages/delete/" . $data->id) . '\')">
+                                            <i class="ik ik-trash-2 f-16 text-red"></i>
+                                        </a>
                                             </div>';
                                             
                 }

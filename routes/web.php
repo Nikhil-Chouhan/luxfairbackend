@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\ProductattributeController;
 use App\Http\Controllers\ManufacturerContoller;
+use App\Http\Controllers\SectorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
@@ -33,6 +34,8 @@ use App\Http\Controllers\FrontendController;
 Route::get('/', [FrontendController::class,'index'])->name('frontend.home');
 Route::get('/products', [FrontendController::class,'products'])->name('frontend.products');
 Route::get('/sectors', [FrontendController::class,'sectors'])->name('frontend.sectors');
+Route::get('/supersearch', [FrontendController::class,'supersearch'])->name('frontend.supersearch');
+
 Route::get('/manufacturers', [FrontendController::class,'manufacturers'])->name('frontend.manufacturers');
 Route::get('/comparisions', [FrontendController::class,'comparisions'])->name('frontend.comparisions');
 Route::get('/product_detail/{slug}', [FrontendController::class,'productDetail'])->name('frontend.product_detail');
@@ -119,6 +122,15 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'], function () {
 		Route::post('/manufacturers/update', [ManufacturerContoller::class,'update'])->name('update-manufacturers');
 		Route::get('/manufacturers/delete/{id}', [ManufacturerContoller::class,'delete']);
 	});
+
+	Route::group(['middleware' => 'can:manage_sector'], function(){
+		Route::get('/sector', [SectorController::class,'index']);
+		Route::get('/sector/get-list', [SectorController::class,'getSectorList']);
+		Route::post('/sector/store', [SectorController::class,'store'])->name('store-sector');
+		Route::post('/sector/update', [SectorController::class,'update'])->name('update-sector');
+		Route::get('/sector/delete/{id}', [SectorController::class,'delete']);
+	});
+
 	//only those have manage_products permission will get access
 	Route::group(['middleware' => 'can:manage_products'], function(){
 		Route::get('/products', [ProductController::class,'index'])->name('products.index');
@@ -130,7 +142,8 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'], function () {
 		Route::get('/products/delete/{id}', [ProductController::class,'delete']);
 		Route::post('/products/gallerytempimgstore', [ProductController::class,'storegalleryTempImg'])->name('gallerytempimgstore');
 		Route::post('/products/gallerytempimgdelete', [ProductController::class,'deletegalleryTempImg'])->name('gallerytempimgdelete');
-		
+		Route::get('/products/duplicate/{id}', [ProductController::class,'duplicate'])->name('duplicate-products');
+
 	// Route::get('/products', function () { return view('inventory.product.list'); });
 	// Route::get('/products/create', function () { return view('inventory.product.create'); }); 
 	});

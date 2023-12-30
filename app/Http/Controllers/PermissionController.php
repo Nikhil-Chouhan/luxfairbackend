@@ -58,7 +58,9 @@ class PermissionController extends Controller
                 $output = '';
                 if ($hasManagePermission) {
                     $output = '<div class="table-actions">
-                                    <a href="' . url('admin/permission/delete/' . $data->id) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                    <a href="javascript:void(0);" onclick="showConfirmationModal(\'' . url("admin/permission/delete/" . $data->id) . '\')">
+                                    <i class="ik ik-trash-2 f-16 text-red"></i>
+                                </a>
                                 </div>';
                 }
 

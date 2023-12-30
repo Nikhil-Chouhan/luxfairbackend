@@ -77,9 +77,21 @@
                                             Outdoor
                                         @endif
                                     </li> 
+                                    <li class="ht_1">Category</li>
+                                    <li class="hd_1">
+                                        {{optional($comparision->product->category)->category_title ?? "-"}}
+                                    </li>
+                                    <li class="ht_1">SubCategory</li>
+                                    <li class="hd_1">
+                                        {{optional($comparision->product->subcategory)->subcategory_title ?? "-" }}
+                                    </li>
                                     <li class="ht_1">Sector</li>
                                     <li class="hd_1">
-                                        {{$comparision->product->sector}}
+    @php
+        $sectorIds = explode(',', $comparision->product->sector_id);
+        $sectors = App\Models\Sector::whereIn('id', $sectorIds)->pluck('name')->toArray();
+        echo implode(', ', $sectors);
+    @endphp
                                     </li>
                                     <li class="ht_1">Manufacturer</li>
                                     <li class="hd_1">
