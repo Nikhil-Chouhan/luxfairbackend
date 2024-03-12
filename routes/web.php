@@ -35,6 +35,8 @@ Route::get('/', [FrontendController::class,'index'])->name('frontend.home');
 Route::get('/products', [FrontendController::class,'products'])->name('frontend.products');
 Route::get('/sectors', [FrontendController::class,'sectors'])->name('frontend.sectors');
 Route::get('/supersearch', [FrontendController::class,'supersearch'])->name('frontend.supersearch');
+Route::get('/supersearchresult', [FrontendController::class,'supersearchresult'])->name('frontend.supersearchresult');
+Route::get('/aftersupersearch', [FrontendController::class,'aftersupersearch'])->name('frontend.aftersupersearch');
 
 Route::get('/manufacturers', [FrontendController::class,'manufacturers'])->name('frontend.manufacturers');
 Route::get('/comparisions', [FrontendController::class,'comparisions'])->name('frontend.comparisions');
@@ -45,7 +47,7 @@ Route::get('/comparisions/clearall', [FrontendController::class,'clearallCompari
 // frontend.comparisions.clear
 Route::get('/comparisions/clear/{id}', [FrontendController::class,'clearComparisions'])->name('frontend.comparisions.clear');
 Route::get('/login', [FrontendController::class,'login'])->name('frontend.login');
-Route::post('/login', [FrontendController::class,'loginSubmit'])->name('frontend.login.submit');
+Route::post('/login', [LoginController::class,'login'])->name('frontend.login.submit');
 Route::get('/register', [FrontendController::class,'register'])->name('frontend.register');
 Route::post('/register/submit', [FrontendController::class,'registerSubmit'])->name('frontend.register.submit');
 

@@ -84,9 +84,11 @@
 
                                 <div class="form-group">
                                     <label class="d-block">Sub Category</label>
-                                    <select class="form-control select2 " name="subcategory_id">
+                                    <select class="form-control select2 " name="subcategory_id" id="subcategory_id" value="{{ old('subcategory_id') }}">
                                         <option selected="selected" value="" data-select2-id="2">Select Category</option>
-                                       
+                                        <!-- @foreach($allsubcategories as $subcategory)
+                                            <option value="{{ $subcategory->id }}">{{ $subcategory->subcategory_title }}</option>
+                                        @endforeach -->
                                     </select>
                                 </div>
                             </div>
@@ -287,23 +289,42 @@
 
     // select option set as selected
     $(document).ready(function(){
+        
         var category_id = "{{ !empty(old('category_id'))?old('category_id'):$product->category_id }}";
         var manufacturer_id = "{{ !empty(old('manufacturer_id'))?old('manufacturer_id'):$product->manufacturer_id }}";
         var subcategory_id = "{{ !empty(old('subcategory_id'))?old('subcategory_id'):$product->subcategory_id }}";
         var is_active = "{{ !empty(old('is_active'))?old('is_active'):$product->is_active }}";
+        var sector_id = "{{ !empty(old('sector_id'))?old('sector_id'):$product->sector_id }}";
+
         if(category_id != ''){
             $('#category_id').val(category_id);
             $('#category_id').trigger('change');
         }
         if(manufacturer_id != ''){
             $('#manufacturer_id').val(manufacturer_id);
+            $('#manufacturer_id').trigger('change');
         }
         if(subcategory_id != ''){
             $('#subcategory_id').val(subcategory_id);
+            $('#subcategory_id').trigger('change');
+
         }
         if(is_active != ''){
             $('#is_active').val(is_active);
+            $('#is_active').trigger('change');
         }
+        if(sector_id != ''){
+            console.log(sector_id);
+            var selectedValues = sector_id.split(',');
+            var multiselectElement = document.getElementById('sector_id');
+            selectedValues.forEach(function(value) {
+                var option = multiselectElement.querySelector('option[value="' + value + '"]');
+                if (option) {
+                    option.selected = true;
+                }
+            });
+        }
+
     });
     
 

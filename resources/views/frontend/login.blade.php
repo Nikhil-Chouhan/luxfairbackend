@@ -41,35 +41,30 @@
 		<div class="row">
 			<div class="col-md-5 offset-md-4">
 				<div class="login">
-				    <form action="/action_page.php">				
+                <form action="{{ route('frontend.login.submit') }}" method="post">	
 						<h1>Log in</h1>
+                        @csrf
 						<div class="form-control newlogin">
 							<input type="text" placeholder="E-mail" name="email" id="email" required>
                          </div> 
 						<div class="form-control newlogin logintype">
-							<input id="password-field" type="text" class="form-control" name="password" value="Password">
+							<input id="password-field" type="text" class="form-control" name="password" placeholder="Password">
 							<span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
                         </div>
-						<div class="row">
+						<!-- <div class="row">
 						    <div class="col-md-6 logto">
-						      
-							   
-							    <form>
 									<div class="form-group">
 									  <input type="checkbox" id="html">
 									  <label for="html">Keep me signed in</label>
 									</div>
-									
-								  </form>
                             </div>
 							 <div class="col-md-6 logto">
 								<div class="forgot">
 								    <p><a href="forgot.html">Forgot password?</a></p>
 								</div>
 							 </div>
-						 </div>
-					 
-							<button type="submit" class="registerbtn">SIGN IN</button>
+						 </div> -->
+					<button type="submit" class="registerbtn">SIGN IN</button>
 					  <div class=" signup">
 						<p>Not a member yet? <a href="{{route('frontend.register')}}">Sign up</a></p>
 					</div>

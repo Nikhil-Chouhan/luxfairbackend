@@ -3767,6 +3767,9 @@ color: #fff;
 .mysimilar h1{text-transform: capitalize!important;
     color: #000!important;}
 	.sectorin a{color:#000;}
+    .light_anchor_color a {
+        color:#fff !important;
+    }
 	.list-group-item-action b{text-transform: uppercase!important;}
 	.search1{    margin-top: -6px;}
 	.week{    margin-top: -4px;}
@@ -4151,4 +4154,18 @@ input[type="checkbox"]:before {
 .non_bg_button {
     background: unset;
     border: unset;
+}
+
+.truncate-lines {
+    display: -webkit-box;
+    /* max-width: 400px; */
+    height: 52px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) and (max-width: 991px) { 
+    
 }

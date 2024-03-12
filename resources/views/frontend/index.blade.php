@@ -39,7 +39,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="icons">
-                                    <button class="non_bg_button" type="button" data-toggle="modal" data-target="#confirmationModal"><img src="{{ asset('frontend/images/supersearch.png')}}"></button>
+                                    <a class="non_bg_button" href="/supersearch"><img src="{{ asset('frontend/images/supersearch.png')}}"></a>
                                 </div>
                             </div>
                         </div>
@@ -58,10 +58,47 @@
 
     <!--sliderstart-->
     <section class="week">
-        <div class="container">
+    <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                  
+                    <div class="owl-slider head_h">
+                        <h1>PRODUCTS OF THE WEEK</h1>
+                        <div class="featured-products-homepage owl-carousel owl-theme">
+
+
+                        @if($product_of_week->count() > 0)
+                    @foreach($product_of_week as $product)
+                        <div class="item">
+                            <div class="products-single fix">
+                                <div class="box-img-hover">
+                                    <img  src="{{ asset( $product->image) }}" class="img-fluid img_feat" alt="Image">
+                                    <!-- <div class="type_s">
+                                        <i class="far fa-heart"></i>
+                                    </div>  -->
+                                </div>
+                                <div class="why-text">
+                                    <h4>
+                                        <a href="{{ route('frontend.product_detail', $product->slug) }}">{{ $product->name }}</a>
+                                    </h4> 
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+
+                            <!-- <div class="item tr ">
+                                <img src="{{ asset('frontend/images/home1.jpg')}}" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut
+                                    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                                    ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+                                <button>DETAILS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i
+                                        class="fa fa-caret-down"></i></button>
+                            </div> -->
+                    
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -78,7 +115,7 @@
                             </h3>
                         </div>
                         <div class="three-column-images">
-                        <div class="container ava_2 sectorin" >
+                        <div class="container ava_2 sectorin light_anchor_color" >
 								<div class="row justify-content-center">
 
 								@if(isset($all_sector) && $all_sector->count() > 0)
@@ -109,6 +146,9 @@
             </div>
         </div>
 
+
+    
+
         <div class="box-add-products arts_ee">
             <div class="container ">
                 <div class="row">
@@ -119,7 +159,7 @@
                             </h3>
                         </div>
                         <div class="three-column-images">
-                        <div class="container ava_2 sectorin" >
+                        <div class="container ava_2 sectorin light_anchor_color" >
 								<div class="row justify-content-center">
 
 								@if(isset($all_categories) && $all_categories->count() > 0)

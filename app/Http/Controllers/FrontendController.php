@@ -23,9 +23,9 @@ class FrontendController extends Controller
     {
         $all_sector= Sector::orderBy('id', 'asc')->get();
         $all_categories= Category::orderBy('id', 'asc')->get();
-        // $product_of_week= Product::where('featured_product', 1)->count();
+        $product_of_week= Product::where('is_featured', 1)->get();
 
-        return view('frontend.index',compact('all_sector','all_categories'));
+        return view('frontend.index',compact('all_sector','all_categories','product_of_week'));
     }
     
     public function register()
@@ -60,6 +60,7 @@ class FrontendController extends Controller
         $user->email = strtolower($request->email);
         $user->password = Hash::make($request->password);
         $user->save();
+        $user->syncRoles(7);
 
         // login user
         auth()->login($user);
@@ -96,6 +97,9 @@ class FrontendController extends Controller
 
         // check if user exists
         $credentials = $request->only('email', 'password');
+
+        auth()->attempt($credentials);
+
         if (auth()->attempt($credentials)) {
             return redirect()->route('frontend.home');
         } else {
@@ -127,6 +131,18 @@ class FrontendController extends Controller
                 }
             } 
         }
+
+        if ($request->has('category')) {
+            $categoryIds = explode(',', $request->category);
+        
+            // Check if all values are integers
+            if (count($categoryIds) > 0 && count(array_filter($categoryIds, 'is_numeric')) === count($categoryIds)) {
+                foreach ($categoryIds as $categoryId) {
+                    $all_products = $all_products->orWhere('category_id', 'LIKE', '%,' . $categoryId . ',%');
+                }
+            } 
+        }
+
         // indoor_outdoor_filter
         if ($request->has('indoor_outdoor_filter')) {
             $indoor_outdoor =  $request->indoor_outdoor_filter;
@@ -208,15 +224,114 @@ class FrontendController extends Controller
     }
 
 
-    public function supersearch(Request $request)
+    public function supersearchresult(Request $request)
     {  
     $query = $request->input('query');
     $all_products = Product::where('name', 'LIKE', "%$query%")->get();
-    $indoor_products_count= Product::where('indoor_outdoor', 'indoor')->count();
-    $outdoor_products_count= Product::where('indoor_outdoor', 'outdoor')->count();
-    $all_manufacturers= Manufacturer::orderBy('id', 'desc')->get();
-    return view('frontend.products', compact('all_products', 'indoor_products_count', 'outdoor_products_count', 'all_manufacturers'));
+    return view('frontend.searchresults', compact('all_products'));
+    }
 
+    public function supersearch(Request $request)
+    {  
+
+        $all_products = Product::orderBy('id', 'desc'); 
+        $hasresult = false;
+
+        if ($request->has('searchresult')) {
+            $hasresult = true;
+        }
+
+        if ($request->has('manufacturer')) {
+            $manufacturer =  explode(',', $request->manufacturer); 
+            // check if all values are integrer 
+            if (array_filter($manufacturer, 'is_numeric')) {
+                $all_products = $all_products->whereIn('manufacturer_id', $manufacturer);
+            } 
+        }
+
+        if ($request->has('sector')) {
+            $sectorIds = explode(',', $request->sector);
+        
+            // Check if all values are integers
+            if (count($sectorIds) > 0 && count(array_filter($sectorIds, 'is_numeric')) === count($sectorIds)) {
+                foreach ($sectorIds as $sectorId) {
+                    $all_products = $all_products->orWhere('sector_id', 'LIKE', '%,' . $sectorId . ',%');
+                }
+            } 
+        }
+
+        if ($request->has('category')) {
+            $categoryIds = explode(',', $request->category);
+        
+            // Check if all values are integers
+            if (count($categoryIds) > 0 && count(array_filter($categoryIds, 'is_numeric')) === count($categoryIds)) {
+                foreach ($categoryIds as $categoryId) {
+                    $all_products = $all_products->orWhere('category_id', 'LIKE', '%,' . $categoryId . ',%');
+                }
+            } 
+        }
+
+        // indoor_outdoor_filter
+        if ($request->has('indoor_outdoor_filter')) {
+            $indoor_outdoor =  $request->indoor_outdoor_filter;
+            $check_indoor_outdoor = array('indoor', 'outdoor');
+            if (in_array($indoor_outdoor, $check_indoor_outdoor)) { 
+                $all_products =  $all_products->where('indoor_outdoor', $indoor_outdoor);
+            } 
+        }
+        // other_filter
+        if ($request->has('other_filter')) {
+            $other_filter =  $request->other_filter;
+            $check_other_filter = array('popularity', 'manu_a_z', 'manu_z_a');
+            if (in_array($other_filter, $check_other_filter)) { 
+                if ($other_filter == 'popularity') {
+                    $all_products =  $all_products->orderBy('view_count', 'desc');
+                }
+                elseif ($other_filter == 'manu_a_z') {
+                    // manufacturer names a to z 
+                    $all_products =  $all_products->manufacturer->orderBy('name', 'asc');
+                }
+                elseif ($other_filter == 'manu_z_a') {
+                    $all_products =  $all_products->manufacturer->orderBy('name', 'desc');
+                }
+            } 
+        }
+        
+        
+
+        // showproducts
+        if ($request->has('showproducts')) {
+            $showproducts =  $request->showproducts;
+            
+            $check_array= array('30', '60', 'all');
+
+            if (in_array($showproducts, $check_array)) {
+                if($showproducts == '30')
+                {
+                    $all_products = $all_products->paginate(30);
+                }
+                elseif($showproducts == '60')
+                {
+                    $all_products = $all_products->paginate(60);
+                }else{
+                    $all_products = $all_products->get();
+                }
+                
+            }
+        }else{
+            $all_products = $all_products->get();
+        }
+
+        $indoor_products_count= Product::where('indoor_outdoor', 'indoor')->count();
+        $outdoor_products_count= Product::where('indoor_outdoor', 'outdoor')->count();
+        $all_manufacturers= Manufacturer::orderBy('id', 'desc')->get();
+        return view('frontend.supersearch', compact('hasresult', 'all_products', 'indoor_products_count', 'outdoor_products_count', 'all_manufacturers'));
+
+    }
+
+    public function aftersupersearch(Request $request)
+    {  
+    return view('frontend.aftersupersearch');
     }
 
     public function sectors()

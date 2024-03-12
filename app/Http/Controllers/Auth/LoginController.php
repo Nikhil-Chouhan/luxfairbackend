@@ -39,10 +39,28 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function redirectTo()
+    {
+        $userRoles = auth()->user()->roles->pluck('name')->toArray();
+
+        if (in_array('Super Admin', $userRoles)) {
+            return '/admin/dashboard';
+        }else if (in_array('Vendor', $userRoles)) {
+            return '/admin/dashboard';
+        } else if (in_array('Normal', $userRoles)) {
+            return '/';
+        } else {
+            return '/';
+        }
+    }
+
     // custom logout function
     // redirect to login page
     public function logout(Request $request)
     {
+
+        $user_role = auth()->user()->roles->pluck('name')->toArray();
+ 
         $this->guard()->logout();
 
         $request->session()->invalidate();
@@ -52,10 +70,18 @@ class LoginController extends Controller
         if ($response = $this->loggedOut($request)) {
             return $response;
         }
+        if(in_array('Super Admin', $user_role) || in_array('Vendor', $user_role) ){
+            return redirect('admin/login');
+        }
+        else if (in_array('Normal', $user_role)) {
+            return redirect('/login');
+        }
+        else{
+            return $request->wantsJson()
+                ? new Response('', 204)
+                : redirect('/login');
+        }
 
-        return $request->wantsJson()
-            ? new Response('', 204)
-            : redirect('/login');
     }
 
     
@@ -82,5 +108,15 @@ class LoginController extends Controller
         // if the user has not been authenticated
         return $this->sendFailedLoginResponse($request);
     }
+
+        // validateLogin
+        protected function validateLogin(Request $request)
+        {
+            // validate the form data
+            $request->validate([
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+            ]);
+        }
 
 }

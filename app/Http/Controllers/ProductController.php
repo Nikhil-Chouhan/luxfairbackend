@@ -260,6 +260,7 @@ class ProductController extends Controller
     public function edit( $id ): View
     {
         $categories = Category::get();
+        $allsubcategories = SubCategory::get();
         $product_attribues = Productattribute::get()->toArray();
         $product_arr = array();
         $product= Product::find($id);
@@ -282,7 +283,8 @@ class ProductController extends Controller
         // echo "<pre>";
         // print_r($product_metas);
         // die;
-        return view('inventory.product.edit', compact('product','categories','product_arr','manufacturers','sector','product_gallery','product_metas'));
+        // dd($product, $product_metas);
+        return view('inventory.product.edit', compact('product','categories','allsubcategories','product_arr','manufacturers','sector','product_gallery','product_metas'));
     }
 
    
@@ -313,8 +315,11 @@ class ProductController extends Controller
             $product->category_id = $request->category_id;
             $product->subcategory_id = $request->subcategory_id;
             $product->manufacturer_id = $request->manufacturer_id;
-            $sectorIdsString = implode(',', $request->sector_id);
-            $product->sector_id = $sectorIdsString;
+            if(isset($request->sector_id)) {
+                $sectorIdsString = implode(',', $request->sector_id);
+                $product->sector_id = $sectorIdsString;
+            }
+            $product->code = $request->code;
             $product->price = $request->price;
             $product->short_description = $request->short_description;
             $product->long_description = $request->long_description;

@@ -4,6 +4,8 @@
     <script src="{{ asset('frontend/js/jquery-3.2.1.min.js')}}"></script>
     <script src="{{ asset('frontend/js/popper.min.js')}}"></script>
     <script src="{{ asset('frontend/js/bootstrap.min.js')}}"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" ></script> -->
+
     <!-- ALL PLUGINS -->
     <script src="{{ asset('frontend/js/jquery.superslides.min.js')}}"></script>
     <script src="{{ asset('frontend/js/bootstrap-select.js')}}"></script>

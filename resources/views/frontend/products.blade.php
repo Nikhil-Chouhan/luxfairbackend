@@ -108,6 +108,40 @@
                                 </div>
                             </div> 
                         </div> 
+
+                        <div class="accordion" id="accordionExampleThree">
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <button class="btn  " type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        Categories <i class="fa fa-angle-down"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div id="collapseThree" class="collapse show" aria-labelledby="headingThree" data-parent="#accordionExampleThree">
+                                <div class="card-body"> 
+                                    @php
+
+                                        $all_category = App\Models\Category::all();
+                                        $category_ids = [];
+                                        if(request()->has('category')){
+                                            $category_ids = explode(',', request()->category);
+                                        }
+                                    @endphp
+
+
+
+                                    @foreach($all_category as $category)
+                                        <input type="checkbox" id="category_{{$category->id}}" name="category" class="category_filter" value="{{$category->id}}" @if(in_array($category->id, $category_ids)) checked @endif>
+                                        <label for="category_{{$category->id}}">{{$category->category_title}}</label>
+                                        <br>
+                                    @endforeach
+                                </div>
+                                </div>
+                            </div> 
+                        </div> 
+
                     </div> 
                 </div>
 
@@ -155,6 +189,7 @@
                             <div class="tab-content">
                                 <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
                                     <div class="row">
+                                    @if(count($all_products) > 0)
                                         @foreach($all_products as $product)
 
                                             <div class="col-sm-6 col-md-6 col-lg-3 col-xl-3">
@@ -168,14 +203,15 @@
     
                                                         </div>
                                                         <div class="why-text">
-                                                            <h4>
-                                                                {{$product->name}}
-                                                            </h4> 
+                                                        <h4 class="truncate-lines"> {{ $product->name }} </h4>
                                                         </div>
                                                     </a>
                                                 </div>
                                             </div> 
                                         @endforeach
+                                        @else
+                                        <div class="danger">No Products Found</div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div role="tabpanel" class="tab-pane fade" id="list-view">
@@ -343,6 +379,16 @@
             searchParams.set('sector', sector)
             window.location.search = searchParams.toString()
         });
+        $('.category_filter').click(function(){
+            var category = [];
+            $('.category_filter:checked').each(function(){
+                category.push($(this).val());
+            });
+            category = category.toString();  
+            var searchParams = new URLSearchParams(window.location.search)
+            searchParams.set('category', category)
+            window.location.search = searchParams.toString()
+        });
         // showproducts_filter filter
         $('.showproducts_filter').change(function(){
             $selected_value = $(this).val();
@@ -366,6 +412,7 @@
         });
     });
     </script>
+
     <!--tabend-->
 
     @endpush

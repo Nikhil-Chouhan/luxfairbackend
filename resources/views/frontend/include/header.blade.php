@@ -30,14 +30,13 @@
                 <!-- Start Atribute Navigation -->
                 <div class="attr-nav">
                     <ul>
+                        <!-- <li class="search">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#superSearchModal" > <i class="fa fa-search"></i></a>
+                        </li> -->
+
                         <li class="search">
-                            <a href="#">
+                            <a href="{{ route('frontend.supersearch') }}">
                                 <i class="fa fa-search"></i>
-                            </a>
-                        </li>
-                        <li class="search">
-                            <a href="supersearch.html">
-                                <i class="fa fa-search-plus"></i>
                             </a>
                         </li>
                         <li class="search2">
@@ -62,5 +61,3 @@
         <!-- End Navigation -->
     </header>
     <!-- End Main Top -->
-
-    
