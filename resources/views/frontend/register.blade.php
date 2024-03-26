@@ -82,6 +82,13 @@
 						<p>Already a member? <a href="{{route('frontend.login')}}">Sign in</a></p>
 					</div>
 					</form> 
+                    <div class="block mt-4">
+                <div class="d-flex justify-content-center mt-4">
+                    <a href="{{ url('login/google') }}">
+                        <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                    </a>
+                </div>
+            </div>
 				</div>
 			</div>
 		</div>

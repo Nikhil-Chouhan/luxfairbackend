@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\GoogleLoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,9 @@ Route::get('/register', [FrontendController::class,'register'])->name('frontend.
 Route::post('/register/submit', [FrontendController::class,'registerSubmit'])->name('frontend.register.submit');
 
 
+// GoogleLoginController redirect and callback urls
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);
   
 
 Route::get('password/forget',  function () { 
@@ -145,6 +149,10 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'], function () {
 		Route::post('/products/gallerytempimgstore', [ProductController::class,'storegalleryTempImg'])->name('gallerytempimgstore');
 		Route::post('/products/gallerytempimgdelete', [ProductController::class,'deletegalleryTempImg'])->name('gallerytempimgdelete');
 		Route::get('/products/duplicate/{id}', [ProductController::class,'duplicate'])->name('duplicate-products');
+
+			// import_products
+	Route::post('/import_products', [ProductController::class,'importProducts'])->name('import_products');
+	Route::post('/import_product_imgs', [ProductController::class,'importProductImages'])->name('import_product_imgs');
 
 	// Route::get('/products', function () { return view('inventory.product.list'); });
 	// Route::get('/products/create', function () { return view('inventory.product.create'); }); 

@@ -48,8 +48,8 @@
 							<input type="text" placeholder="E-mail" name="email" id="email" required>
                          </div> 
 						<div class="form-control newlogin logintype">
-							<input id="password-field" type="text" class="form-control" name="password" placeholder="Password">
-							<span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span>
+							<input id="password-field" type="password" name="password" placeholder="Password" required>
+							<!-- <span toggle="#password-field" class="fa fa-fw fa-eye-slash field-icon toggle-password"></span> -->
                         </div>
 						<!-- <div class="row">
 						    <div class="col-md-6 logto">
@@ -69,7 +69,17 @@
 						<p>Not a member yet? <a href="{{route('frontend.register')}}">Sign up</a></p>
 					</div>
 					</form> 
+            <div class="block mt-4">
+                <div class="d-flex justify-content-center mt-4">
+                    <a href="{{ url('login/google') }}">
+                        <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png">
+                    </a>
+                </div>
+            </div>
 				</div>
+                <div class=" signup">
+						<p>Are you a vendor? <a href="{{route('login')}}">Login here</a></p>
+					</div>
 			</div>
 		</div>
     </div>

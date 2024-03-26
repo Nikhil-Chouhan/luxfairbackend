@@ -20,7 +20,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2><a href="index.html"><img src="images/Home11.png" class="see_1"></a> / <a
+                <h2><a href="{{route('frontend.home')}}"><img src="images/Home11.png" class="see_1"></a> / <a
                         href="superseacrh.html">Super Search</a></h2>
 
             </div>

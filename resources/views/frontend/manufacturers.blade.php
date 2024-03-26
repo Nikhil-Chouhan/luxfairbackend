@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2><a href="index.html"><img src="{{asset('frontend/images/Home11.png')}}" class="see_11"></a> / <a href="{{route('frontend.manufacturers')}}">
+                    <h2><a href="{{route('frontend.home')}}"><img src="{{asset('frontend/images/Home11.png')}}" class="see_11"></a> / <a href="{{route('frontend.manufacturers')}}">
                             Manufacturer</a></h2>
                 </div>
             </div>

@@ -18,9 +18,11 @@
         "laravel/framework": "^8.0",
         "laravel/helpers": "^1.5",
         "laravel/passport": "^10.0.1",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "laravelcollective/html": "^6.1",
+        "maatwebsite/excel": "^3.1",
         "mews/purifier": "^3.2",
         "spatie/laravel-permission": "^3.11",
         "yajra/laravel-datatables-oracle": "~9.0"

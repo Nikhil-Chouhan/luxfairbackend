@@ -204,23 +204,28 @@ class FrontendController extends Controller
     public function productDetail($slug)
     {
         $product = Product::where('slug', $slug)->first();
-
-        $product->view_count = $product->view_count + 1;
-        $product->save();
-        $product_attribues = Productattribute::get()->toArray();
-        $product_arr = array();
-
-        foreach($product_attribues as $key => $item)
-        {
-            if(array_key_exists('group', $item))
-                $product_arr[$item['group']][$key] = $item;
+        if($product) {
+            $product->view_count = $product->view_count + 1;
+            $product->save();
+            $product_attribues = Productattribute::get()->toArray();
+            $product_arr = array();
+    
+            foreach($product_attribues as $key => $item)
+            {
+                if(array_key_exists('group', $item))
+                    $product_arr[$item['group']][$key] = $item;
+            }
+    
+            ksort($product_arr, SORT_NUMERIC);
+    
+            $similar_products = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->get();
+     
+            return view('frontend.product_details', compact('product', 'product_arr', 'similar_products'));
         }
+        else {
+            return redirect()->back()->with('error', 'Product doesnt Exist!');
 
-        ksort($product_arr, SORT_NUMERIC);
-
-        $similar_products = Product::where('category_id', $product->category_id)->where('id', '!=', $product->id)->get();
- 
-        return view('frontend.product_details', compact('product', 'product_arr', 'similar_products'));
+        }
     }
 
 

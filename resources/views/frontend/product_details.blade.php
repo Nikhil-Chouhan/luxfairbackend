@@ -30,7 +30,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2><a href="index.html"><img src="{{asset('frontend/images/Home11.png')}}" class="see_11"></a>/<a href="{{ route('frontend.products') }}">Products</a>/<a href="{{ route('frontend.product_detail', $product->slug) }}">{{ $product->name }}</a></h2>
+                <h2><a href="{{route('frontend.home')}}"><img src="{{asset('frontend/images/Home11.png')}}" class="see_11"></a>/<a href="{{ route('frontend.products') }}">Products</a>/<a href="{{ route('frontend.product_detail', $product->slug) }}">{{ $product->name }}</a></h2>
 
             </div>
         </div>
@@ -58,11 +58,26 @@
                 <div id="carousel-example-1" class="single-product-slider carousel slide" data-ride="carousel">
                     <a href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"
                         class="detailpage">&nbsp;<i class="far fa-heart"></i></a>
-                    <div class="carousel-inner" role="listbox">
+
+                        <div class="products-gallery owl-carousel owl-theme">
+                            @if($product->productgallery->count() > 0)
+                                @foreach($product->productgallery as $key=>$gallery)
+                                    <div class="item">
+                        <img class="d-block img-fluid  w-100" src="{{ asset( $gallery->image) }}"
+                      alt="slide"  /> 
+                                    </div>
+                                @endforeach
+                            @else 
+                            <div class="item">
+                        <img class="d-block img-fluid  w-100" src="{{ asset( $product->image) }}"
+                     alt="slide"  /> 
+                                    </div>
+                            @endif
+                            
+                        </div>
+
+                    <!-- <div class="carousel-inner" role="listbox">
                         @if($product->productgallery->count() > 0)
-
-                       
-
                             @foreach($product->productgallery as $key=>$gallery)
                                 @if($key == 0)
                                 <div class="carousel-item active"> <img class="d-block w-100"
@@ -73,7 +88,11 @@
                                         alt="slide" style="height: 400px; width: 400px;" /> </div>
                                 @endif
                             @endforeach
+                        @else 
+                        <div class="carousel-item"> <img class="d-block w-100" src="{{ asset( $product->image) }}"
+                                        alt="slide" style="height: 400px; width: 400px;" /> </div>
                         @endif
+
                     </div>
 
                     <ol class="carousel-indicators">
@@ -94,7 +113,7 @@
                         @endforeach
                         @endif
 
-                    </ol>
+                    </ol> -->
                 </div>
             </div>
             <div class="col-xl-7 col-lg-7 col-md-6">

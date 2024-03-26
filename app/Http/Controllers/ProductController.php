@@ -7,7 +7,7 @@ use App\Models\Productmeta;
 use App\Models\Productgallery;
 use App\Models\Productattribute;
 use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\Subcategory;
 use App\Models\Manufacturer;
 use App\Models\Sector;
 
@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 use File;
+
+use App\Imports\ProductsImport;
+use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 
 class ProductController extends Controller
@@ -175,7 +181,7 @@ class ProductController extends Controller
                 foreach ($gallery_images as $key => $value) {
                     $gallery_img_c++;
                     $temp_filename = $value;
-                    $destinationPath = public_path('uploads/product/'.$product->id.'/gallery');
+                    $destinationPath = public_path('uploads/product/'.$product->id);
                     // Make dire 
                     if (!File::exists($destinationPath)) {
                         File::makeDirectory($destinationPath, 0777, true, true);
@@ -184,7 +190,7 @@ class ProductController extends Controller
                     $ext = pathinfo($temp_filename, PATHINFO_EXTENSION);
                     $name = time().'_'.$gallery_img_c. '.' . $ext;
                     File::move(public_path('uploads/products/temp/'.$temp_filename), $destinationPath.'/'.$name);
-                    $gpath = 'uploads/product/'.$product->id.'/gallery/'.$name;
+                    $gpath = 'uploads/product/'.$product->id.'/'.$name;
                     $product_gallery = new Productgallery();
                     $product_gallery->product_id = $product->id;
                     $product_gallery->image = $gpath;
@@ -260,7 +266,7 @@ class ProductController extends Controller
     public function edit( $id ): View
     {
         $categories = Category::get();
-        $allsubcategories = SubCategory::get();
+        $allsubcategories = Subcategory::get();
         $product_attribues = Productattribute::get()->toArray();
         $product_arr = array();
         $product= Product::find($id);
@@ -368,11 +374,11 @@ class ProductController extends Controller
                 # code...
                 foreach ($gallery_images as $key => $value) {
                     // check if img already exists
-                    $old_file = public_path('uploads/product/'.$product->id.'/gallery/'.$value);
+                    $old_file = public_path('uploads/product/'.$product->id.'/'.$value);
                     if (!(File::exists($old_file))) {
                         $gallery_img_c++;
                         $temp_filename = $value;
-                        $destinationPath = public_path('uploads/product/'.$product->id.'/gallery');
+                        $destinationPath = public_path('uploads/product/'.$product->id.'');
                         // Make dire 
                         if (!File::exists($destinationPath)) {
                             File::makeDirectory($destinationPath, 0777, true, true);
@@ -382,7 +388,7 @@ class ProductController extends Controller
                         $name = time().'_'.$gallery_img_c. '.' . $ext;
                         File::move(public_path('uploads/products/temp/'.$temp_filename), $destinationPath.'/'.$name);
 
-                        $gpath = 'uploads/product/'.$product->id.'/gallery/'.$name;
+                        $gpath = 'uploads/product/'.$product->id.'/'.$name;
                         $product_gallery = new Productgallery();
                         $product_gallery->product_id = $product->id;
                         $product_gallery->image = $gpath;
@@ -467,7 +473,7 @@ class ProductController extends Controller
             $product_id = $request->product_id;
 
 
-            $image_path = public_path('uploads/product/'.$product_id.'/gallery/' . $request->filename);
+            $image_path = public_path('uploads/product/'.$product_id.'/' . $request->filename);
             // delete if exists
             if (File::exists($image_path)) {
                 File::delete($image_path);
@@ -486,4 +492,88 @@ class ProductController extends Controller
         return response()->json(['success' => true]);
 
     }
+
+  // importProducts
+  public function importProducts(Request $request)
+  {
+      $request->validate([
+          'file' => 'required|mimes:xlsx,xls',
+      ]);
+      try { 
+          $file = $request->file('file'); 
+          $import = new ProductsImport;
+          Excel::import($import, $file);             
+          return redirect('admin/products')->with('success', 'Products imported successfully.');
+      } catch (\Throwable $th) { 
+          $bug = $th->getMessage();
+          
+          Log::error($bug);
+          return redirect('admin/products')->with('error','Something went wrong. ' . $bug)->withInput();
+      }
+  }
+
+  // importProductImages
+  public function importProductImages(Request $request)
+  {
+      $request->validate([
+         'product_id' => 'required',
+          'images' => 'required',
+      ]);
+      try {  
+          $images = $request->file('images');
+         $product_id = $request->product_id;
+          Log::error('images: ' . count($images));
+          foreach ($images as $key => $value) { 
+              $extension = $value->getClientOriginalExtension();
+
+              // check if file is image
+              if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp','JPG', 'JPEG', 'PNG', 'WEBP','mp4','avi','mov','MP4','AVI','MOV'])) {
+                  $originalName = $value->getClientOriginalName();  
+                  // Remove multiple extensions and keep only the last one
+                  $pathinfo = pathinfo($originalName);
+                  $filename = $pathinfo['filename'];
+                  $extension = $pathinfo['extension'];
+
+                  // Remove known extensions (png, jpg, jpeg) with a dot before them
+                  $extensionsToRemove = ['.png', '.webp', '.jpg', '.jpeg','.mp4', '.avi','.mov'];
+                  foreach ($extensionsToRemove as $extension1) {
+                      $filename = str_replace($extension1, '', $filename);
+                  }
+
+                  if (Str::contains($extension, '.')) {
+                      $extensions = explode('.', $extension);
+                      $extension = end($extensions);
+                  }
+
+                  // Store the file with the modified name in the 'uploads' directory
+                  $newFilename = $filename . '.' . $extension;
+                  // make folder if not 
+                  if (!file_exists(public_path('uploads/product/'.$product_id))) {
+                      mkdir(public_path('uploads/product/'.$product_id), 0777, true);
+                  }
+                  try {
+                      
+  
+                      $value->move('uploads/product/'.$product_id, $originalName);
+                  } catch (\Throwable $th) {
+                      
+                      $bug = $th->getMessage();
+                      
+                      Log::error($bug);
+                  }
+              }else{
+                  Log::error('Invalid file: ' . $value->getClientOriginalName());
+              }
+
+
+          } 
+          return redirect('admin/products')->with('success', 'Product Images imported successfully.');
+      } catch (\Throwable $th) { 
+          $bug = $th->getMessage();
+          
+          Log::error($bug);
+          return redirect('admin/products')->with('error', 'Something went wrong. ' )->withInput();
+      }
+  }
+
 }
