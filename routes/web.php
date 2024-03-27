@@ -83,7 +83,7 @@ Route::group(['middleware' => 'auth','prefix' => 'admin'], function () {
 
 	//only those have manage_user permission will get access
 	Route::group(['middleware' => 'can:manage_user'], function(){
-		Route::get('/users', [UserController::class,'index']);
+		Route::get('/users', [UserController::class,'index'])->name('users');
 		Route::get('/user/get-list', [UserController::class,'getUserList']);
 		Route::get('/user/create', [UserController::class,'create']);
 		Route::post('/user/create', [UserController::class,'store'])->name('create-user');

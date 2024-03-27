@@ -112,10 +112,10 @@ class UserController extends Controller
                 // assign new role to the user
                 $user->syncRoles($request->role);
 
-                return redirect('users')->with('success', 'New user created!');
+                return redirect()->route('users')->with('success', 'New user created!');
             }
 
-            return redirect('users')->with('error', 'Failed to create new user! Try again.');
+            return redirect()->route('users')->with('error', 'Failed to create new user! Try again.');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
 
@@ -134,16 +134,17 @@ class UserController extends Controller
         try {
             $user = User::with('roles', 'permissions')->find($id);
             // get user role 
-            $user_role = $user->roles->first();
- 
-            if ($user && $user_role->name != 'Super Admin') {
+            if ($user) {
                 $user_role = $user->roles->first();
+                if ($user_role && $user_role->name != 'Super Admin') {
+                $user_role = $user->roles->first();
+                }
                 $roles = Role::pluck('name', 'id');
 
                 return view('user-edit', compact('user', 'user_role', 'roles'));
-            }
+            } 
 
-            return redirect('404');
+            return redirect()->back()->with('error', 'User does not exist anymore!');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
 
@@ -215,9 +216,9 @@ class UserController extends Controller
         if ($user = User::find($id)) {
             $user->delete();
 
-            return redirect('users')->with('success', 'User removed!');
+            return redirect()->route('users')->with('success', 'User removed!');
         }
 
-        return redirect('users')->with('error', 'User not found');
+        return redirect()->route('users')->with('error', 'User not found');
     }
 }

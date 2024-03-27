@@ -294,8 +294,9 @@
         var manufacturer_id = "{{ !empty(old('manufacturer_id'))?old('manufacturer_id'):$product->manufacturer_id }}";
         var subcategory_id = "{{ !empty(old('subcategory_id'))?old('subcategory_id'):$product->subcategory_id }}";
         var is_active = "{{ !empty(old('is_active'))?old('is_active'):$product->is_active }}";
+        var is_featured = "{{ !empty(old('is_featured'))?old('is_featured'):$product->is_featured }}";
         var sector_id = "{{ !empty(old('sector_id'))?old('sector_id'):$product->sector_id }}";
-
+        
         if(category_id != ''){
             $('#category_id').val(category_id);
             $('#category_id').trigger('change');
@@ -312,6 +313,10 @@
         if(is_active != ''){
             $('#is_active').val(is_active);
             $('#is_active').trigger('change');
+        }
+        if(is_featured != ''){
+            $('#is_featured').val(is_featured);
+            $('#is_featured').trigger('change');
         }
         if(sector_id != ''){
             console.log(sector_id);
@@ -382,20 +387,7 @@
         
 
     });
-    $('#category_id').on('change', function() {
-        var category_id = $(this).val();
-        $.ajax({
-            url: '/admin/get_subcategories/' + category_id,
-            type: "GET",
-            dataType: "json",
-            success: function(data) {
-                $('select[name="subcategory_id"]').empty();
-                $.each(data, function(key, value) {
-                    $('select[name="subcategory_id"]').append('<option value="' + value.id + '">' + value.subcategory_title + '</option>');
-                });
-            },
-        });
-    });
+
 </script>
 
 @endsection

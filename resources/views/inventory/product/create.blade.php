@@ -295,6 +295,8 @@
     });
     $('#category_id').on('change', function() {
         var category_id = $(this).val();
+        console.log(category_id);
+
         $.ajax({
             url: '/admin/get_subcategories/' + category_id,
             type: "GET",

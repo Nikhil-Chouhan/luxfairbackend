@@ -354,7 +354,7 @@ class ProductController extends Controller
             // Product img 
             if ($request->hasFile('image')) {
                 // remove old file 
-                $old_file = public_path('uploads/product/'.$product->id.'/'.$product->image);
+                                $old_file = public_path('uploads/product/'.$product->id.'/'.$product->image);
                 if (File::exists($old_file)) {
                     File::delete($old_file);
                 }
@@ -374,7 +374,16 @@ class ProductController extends Controller
                 # code...
                 foreach ($gallery_images as $key => $value) {
                     // check if img already exists
-                    $old_file = public_path('uploads/product/'.$product->id.'/'.$value);
+ 
+                    $old_file = "uploads/product/19/1711452112_1.png";
+                    $prefix = "uploads/product/".$product->id."/";
+                    // Check if $value already contains the prefix, if not, add it
+                    if (strpos($value, $prefix) !== 0) {
+                        $value = $prefix . $value;
+                    }
+
+                    $old_file = public_path($value);
+
                     if (!(File::exists($old_file))) {
                         $gallery_img_c++;
                         $temp_filename = $value;

@@ -157,11 +157,11 @@
 		}
 	});
 
+
 	$('.featured-products-homepage').owlCarousel({
 		loop: false,
 		margin: 60,
 		dots: false,
-		center: true,
 		autoplay: true,
 		autoplayTimeout: 3000,
 		autoplayHoverPause: true,
@@ -169,18 +169,43 @@
 		responsive: {
 			0: {
 				items: 1,
-				nav: true
+				nav: true,
+				center: true, 
 			},
 			600: {
 				items: 3,
-				nav: true
+				nav: true,
+				center: false, 
 			},
 			1000: {
 				items: 4,
-				nav: true, 
+				nav: true,
+				center: false,
 			}
-		}
+		},
+		// onInitialized: function(event) {
+		// 	var itemsCount = event.item.count;
+		// 	if (itemsCount > 3) {
+		// 		// Enable looping if items are more than 3
+		// 		$('.featured-products-homepage').trigger('refresh.owl.carousel');
+		// 		$('.featured-products-homepage').trigger('to.owl.carousel', 1); // Go to the second item to make sure it's not centered initially
+		// 		$('.featured-products-homepage').owlCarousel('option', 'loop', true);
+		// 	}
+		// },
+		// onChanged: function(event) {
+		// 	var itemsCount = event.item.count;
+		// 	if (itemsCount > 3) {
+		// 		// Enable looping if items are more than 3
+		// 		$('.featured-products-homepage').trigger('refresh.owl.carousel');
+		// 		$('.featured-products-homepage').trigger('to.owl.carousel', 1); // Go to the second item to make sure it's not centered when transitioning
+		// 		$('.featured-products-homepage').owlCarousel('option', 'loop', true);
+		// 	} else {
+		// 		// Disable looping if items are 3 or fewer
+		// 		$('.featured-products-homepage').owlCarousel('option', 'loop', false);
+		// 	}
+		// }
 	});
+	
 
 	/* ..............................................
 	   Featured Products
